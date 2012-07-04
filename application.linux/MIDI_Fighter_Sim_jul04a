@@ -1,0 +1,4 @@
+#!/bin/sh
+
+APPDIR=$(dirname "$0")
+java  -Djava.library.path="$APPDIR" -cp "$APPDIR/lib/MIDI_Fighter_Sim_jul04a.jar:$APPDIR/lib/core.jar:$APPDIR/lib/themidibus.jar:$APPDIR/lib/controlP5.jar" MIDI_Fighter_Sim_jul04a

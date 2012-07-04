@@ -1,0 +1,25 @@
+MIDI Fighter Pro Simulator
+Tomash Ghz
+www.tomashg.com
+====================================
+
+This is a very basic MIDI controller simulator for the MIDI Fighter Pro from DJ TechTools.
+For now it only supports the basic CC midi messages and note ons as in Ableton Mode and no Combos.
+
+There are 3 executables provided for Linux, Windows and Mac OSX as well as the source code if you
+want yo modify something.
+Usage
+=======
+Run the application, and from the MIDIOUT drop down box select a virtual MIDI port, like the MIDI Yoke 
+or LoopBe and click CONNECT. Now you can use your computer keyboard as the arcade controller.
+The button layout is shown on the display. Also you can change banks with the 1,2,3 and 4 keys on
+your keyboard. The currently selected bank is highlighted on the display.
+
+The knobs and faders are operated using the mouse. Click on a knob and drag the mouse left or right
+to turn the knob in that direction. Similarly with the faders, click on the fader and drag up or
+down to change the values.
+
+
+The software is provided as it is and I am not responsible for any mess ups you may do with it.
+
+Have fun and peace!

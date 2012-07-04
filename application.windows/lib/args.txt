@@ -1,0 +1,3 @@
+ -Xms64m -Xmx512m
+MIDI_Fighter_Sim_jul04a
+MIDI_Fighter_Sim_jul04a.jar,core.jar,themidibus.jar,controlP5.jar
