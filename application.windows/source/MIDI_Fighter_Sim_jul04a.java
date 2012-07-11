@@ -20,7 +20,7 @@ import java.util.regex.*;
 
 public class MIDI_Fighter_Sim_jul04a extends PApplet {
 
-// MIDI Fighter Pro simulator
+//MIDI Fighter Pro simulator
 //tomash ghz
 //www.tomashg.com
 
@@ -53,6 +53,7 @@ int velocity = 127;
 //store the previous button state
 boolean arcadeState[]=new boolean[16];
 boolean connected;
+boolean traktormode; // if enabled sends smart knob CCs and combos
 
 public void setup(){
   //set window size
@@ -81,6 +82,7 @@ public void setup(){
   }
   //create a connect button
   controlP5.addButton("connect", 10, 260, 65, 80, 10);
+  controlP5.addToggle("traktormode",false,360,65,10,10);
 }
 
 public void draw(){
@@ -96,25 +98,25 @@ public void draw(){
 //gui event handlers
 public void knobA(int theValue) {
   if(connected)
-    myBus.sendControllerChange(channel, 16, theValue); // Send a controllerChange
+    sendCC(channel, 16, theValue); // Send a controllerChange
   println("A knob event "+theValue);
 }
 
 public void knobB(int theValue) {
   if(connected)
-    myBus.sendControllerChange(channel, 18, theValue); // Send a controllerChange
+    sendCC(channel, 18, theValue); // Send a controllerChange
   println("B knob event "+theValue);
 }
 
 public void sliderA(int theValue) {
   if(connected)
-    myBus.sendControllerChange(channel, 20, theValue); // Send a controllerChange
+    sendCC(channel, 20, theValue); // Send a controllerChange
   println("A slider event "+theValue);
 }
 
 public void sliderB(int theValue) {
   if(connected)
-    myBus.sendControllerChange(channel, 22, theValue); // Send a controllerChange
+    sendCC(channel, 22, theValue); // Send a controllerChange
   println("B slider event "+theValue);
 }
 // event for the connect button
@@ -181,6 +183,19 @@ public int findButton(char c){
   }
   
   return -1;
+}
+
+public void sendCC(int channel, int number, int value){
+  myBus.sendControllerChange(channel, number, value); // Send a controllerChange
+  //send the advanced traktor midi messages
+  if(traktormode){
+     if(value==0) // send the 0 value note on
+        myBus.sendNoteOn(channel, number+84, 127);
+      else if(value==127) // send the 127 value note on
+        myBus.sendNoteOn(channel, number+85, 127);
+      if(value<=64) // send the secondary cc
+        myBus.sendControllerChange(channel, number+1, (int)map(value,0,64,0,105));
+  }
 }
   static public void main(String args[]) {
     PApplet.main(new String[] { "--bgcolor=#ECE9D8", "MIDI_Fighter_Sim_jul04a" });

@@ -4,7 +4,7 @@ www.tomashg.com
 ====================================
 
 This is a very basic MIDI controller simulator for the MIDI Fighter Pro from DJ TechTools.
-For now it only supports the basic CC midi messages and note ons as in Ableton Mode and no Combos.
+It only supports the basic CC midi messages as in Ableton Mode  and the secondary CC messages and combos in Traktor mode.
 
 There are 3 executables provided for Linux, Windows and Mac OSX as well as the source code if you
 want yo modify something.
