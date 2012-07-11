@@ -7,7 +7,8 @@ This is a very basic MIDI controller simulator for the MIDI Fighter Pro from DJ 
 It supports the basic CC midi messages as in Ableton Mode and the secondary CC messages and combos in Traktor mode.
 
 There are 3 executables provided for Linux, Windows and Mac OSX as well as the source code if you
-want yo modify something.
+want yo modify something
+
 Usage
 =======
 Run the application, and from the MIDIOUT drop down box select a virtual MIDI port, like the MIDI Yoke 
@@ -19,6 +20,22 @@ The knobs and faders are operated using the mouse. Click on a knob and drag the 
 to turn the knob in that direction. Similarly with the faders, click on the fader and drag up or
 down to change the values.
 
+Combos
+=======
+
+   A          B           C           D           E
+ +--------+ +--------+  +--------+  +--------+  +--------+
+ |        | |        |  |        |  |        |  |        |
+ |        | |        |  |  y u   |  |        |  |t       |
+ |        | |g h j k |  |  h j   |  |g h j k |  |g h j k |
+ |v b n m | |        |  |        |  |        |  |v       |
+ +--------+ +--------+  +--------+  +--------+  +--------+
+  v-b-n-m    g-h-j-k     hold all   a-b-c-c-d   ttvvghghkj
+      X X        X X                        X            X  
+  
+ For some reason we can have only 2 keys pressed at a time(!?) in the same row  
+ so the combos will work when the keys are pressed and released in sequence appart from the 
+ buttons that have X, which you have to hold down.
 
 The software is provided as it is and I am not responsible for any mess ups you may do with it.
 
