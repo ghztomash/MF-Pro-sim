@@ -21,8 +21,10 @@ Slider sliderA;
 Slider sliderB;
 DropdownList midiOut;
 
-int knobAValue = 0;
-int knobBValue = 0;
+int knobAVal = 0;
+int knobBVal = 0;
+int faderAVal = 0;
+int faderBVal = 0;
 
 //midi values
 int channel = 2;
@@ -55,8 +57,8 @@ void setup(){
   controlP5 = new ControlP5(this);
   knobA = controlP5.addKnob("knobA",0,127,0,60,100,65);
   knobB = controlP5.addKnob("knobB",0,127,0,160,100,65);
-  sliderA= controlP5.addSlider("sliderA",0,127,64,90,300,14,130);
-  sliderA= controlP5.addSlider("sliderB",0,127,64,205,300,14,130);
+  sliderA= controlP5.addSlider("sliderA",0,127,0,90,300,14,130);
+  sliderA= controlP5.addSlider("sliderB",0,127,0,205,300,14,130);
 
   // create the midi prot list
   midiOut = controlP5.addDropdownList("midiOut",100,75,140,80);
@@ -83,26 +85,30 @@ void draw(){
 //gui event handlers
 void knobA(int theValue) {
   if(connected)
-    sendCC(channel, 16, theValue); // Send a controllerChange
+    sendCC(channel, 16, theValue,knobAVal); // Send a controllerChange
   println("A knob event "+theValue);
+  knobAVal=theValue;
 }
 
 void knobB(int theValue) {
   if(connected)
-    sendCC(channel, 18, theValue); // Send a controllerChange
+    sendCC(channel, 18, theValue,knobBVal); // Send a controllerChange
   println("B knob event "+theValue);
+  knobBVal=theValue;
 }
 
 void sliderA(int theValue) {
   if(connected)
-    sendCC(channel, 20, theValue); // Send a controllerChange
+    sendCC(channel, 20, theValue,faderAVal); // Send a controllerChange
   println("A slider event "+theValue);
+  faderAVal=theValue;
 }
 
 void sliderB(int theValue) {
   if(connected)
-    sendCC(channel, 22, theValue); // Send a controllerChange
+    sendCC(channel, 22, theValue,faderBVal); // Send a controllerChange
   println("B slider event "+theValue);
+  faderBVal=theValue;
 }
 // event for the connect button
 void connect(){
@@ -186,15 +192,42 @@ int findButton(char c){
   return -1;
 }
 
-void sendCC(int channel, int number, int value){
+void sendCC(int channel, int number, int value, int oldValue){
   myBus.sendControllerChange(channel, number, value); // Send a controllerChange
   //send the advanced traktor midi messages
+  
+// 0  3            64           124 127
+// |--|-------------|-------------|--| - full range
+//
+// |0=======================127| - CC A
+// |0=========105| - CC B
+//
+// |__|on____________________________| - note A
+// |off___________________________|on| - note B
+//    3                          124
+  
   if(traktormode){
-     if(value==0) // send the 0 value note on
+    println(oldValue);
+    println(value);
+    
+     if((value>3)&&(oldValue<=3)){ // send the 0 value note on
         myBus.sendNoteOn(channel, number+84, 127);
-      else if(value==127) // send the 127 value note on
+        println("sending A on");
+     }
+     else if((value<=3)&&(oldValue>3)){
+        myBus.sendNoteOff(channel, number+84, 0);
+        println("sending A off");
+     }
+     if((value>124)&&(oldValue<=124)){ // send the 127 value note on
         myBus.sendNoteOn(channel, number+85, 127);
-      if(value<=64) // send the secondary cc
+        println("sending B on");
+     }
+     else if((value<=124)&&(oldValue>124)){
+       myBus.sendNoteOff(channel, number+85, 0);
+       println("sending B off");
+     }
+     
+     if(value<=64) // send the secondary cc
         myBus.sendControllerChange(channel, number+1, (int)map(value,0,64,0,105));
   }
 }
